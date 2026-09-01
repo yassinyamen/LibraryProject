@@ -1,0 +1,24 @@
+@if (auth.isLoggedIn()) {
+  <nav class="topnav">
+    <div class="brand">📚 Library System</div>
+
+    <div class="links">
+      <a routerLink="/books" routerLinkActive="active">Books</a>
+      <a routerLink="/requests/my" routerLinkActive="active">My Requests</a>
+      @if (auth.isAdmin()) {
+        <a routerLink="/admin/requests" routerLinkActive="active">Admin Requests</a>
+      }
+      <a routerLink="/notifications" routerLinkActive="active">
+        Notifications
+        @if (unreadCount > 0) {
+          <span class="badge">{{ unreadCount }}</span>
+        }
+      </a>
+    </div>
+
+    <div class="user">
+      <span>{{ auth.currentEmail() }} · {{ auth.currentRole() }}</span>
+      <button (click)="logout()">Log out</button>
+    </div>
+  </nav>
+}

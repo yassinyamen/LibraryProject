@@ -1,0 +1,70 @@
+<div class="page">
+  <h1>Admin · Borrowing Requests</h1>
+
+  <div class="filters">
+    <select [(ngModel)]="statusFilter" (change)="load()">
+      <option value="">All statuses</option>
+      <option value="Pending">Pending</option>
+      <option value="Approved">Approved</option>
+      <option value="Denied">Denied</option>
+      <option value="Returned">Returned</option>
+      <option value="Expired">Expired</option>
+    </select>
+  </div>
+
+  @if (actionError()) {
+    <p class="error">{{ actionError() }}</p>
+  }
+
+  @if (loading()) {
+    <p>Loading…</p>
+  } @else {
+    <div class="list">
+      @for (r of requests(); track r.id) {
+        <div class="request-card">
+          <div class="main">
+            <h3>{{ r.bookTitle }}</h3>
+            <p class="meta">
+              User: {{ r.userId }} · {{ r.borrowingPeriodDays }} days · requested {{ r.requestedAt | date: 'short' }}
+            </p>
+            <span class="status">{{ r.status }}</span>
+          </div>
+
+          @if (r.status === 'Pending') {
+            <div class="actions">
+              <button
+                class="approve-btn"
+                [disabled]="actioningId() === r.id"
+                (click)="approve(r)"
+              >
+                {{ actioningId() === r.id ? 'Working…' : 'Approve' }}
+              </button>
+
+              <input
+                type="text"
+                placeholder="Denial reason…"
+                [(ngModel)]="denyReasonDrafts[r.id]"
+              />
+              <button
+                class="deny-btn"
+                [disabled]="actioningId() === r.id"
+                (click)="deny(r)"
+              >
+                Deny
+              </button>
+            </div>
+          } @else {
+            <div class="reviewed">
+              <p>Reviewed {{ r.reviewedAt | date: 'short' }}</p>
+              @if (r.denyReason) {
+                <p class="deny-reason">Reason: {{ r.denyReason }}</p>
+              }
+            </div>
+          }
+        </div>
+      } @empty {
+        <p>No requests match this filter.</p>
+      }
+    </div>
+  }
+</div>

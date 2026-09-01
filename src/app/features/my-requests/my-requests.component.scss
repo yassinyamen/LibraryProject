@@ -1,0 +1,46 @@
+.page {
+  padding: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.filters {
+  margin-bottom: 1rem;
+}
+
+.filters select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+th {
+  background: #f7f7f9;
+  font-weight: 600;
+}
+
+.status {
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-pending { background: #fff3cd; color: #7a5b00; }
+.status-approved { background: #d4edda; color: #1a7a34; }
+.status-denied { background: #f8d7da; color: #a12a34; }
+.status-returned { background: #d6e4f0; color: #2a5a8a; }
+.status-expired { background: #eee; color: #555; }

@@ -1,0 +1,45 @@
+<div class="page">
+  <h1>My Borrowing History</h1>
+
+  <div class="filters">
+    <select [(ngModel)]="statusFilter" (change)="load()">
+      <option value="">All statuses</option>
+      <option value="Pending">Pending</option>
+      <option value="Approved">Approved</option>
+      <option value="Denied">Denied</option>
+      <option value="Returned">Returned</option>
+      <option value="Expired">Expired</option>
+    </select>
+  </div>
+
+  @if (loading()) {
+    <p>Loading…</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Book</th>
+          <th>Status</th>
+          <th>Period</th>
+          <th>Requested</th>
+          <th>Reviewed</th>
+          <th>Deny reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of requests(); track r.id) {
+          <tr>
+            <td>{{ r.bookTitle }}</td>
+            <td><span [class]="statusClass(r.status)">{{ r.status }}</span></td>
+            <td>{{ r.borrowingPeriodDays }} days</td>
+            <td>{{ r.requestedAt | date: 'short' }}</td>
+            <td>{{ r.reviewedAt ? (r.reviewedAt | date: 'short') : '—' }}</td>
+            <td>{{ r.denyReason || '—' }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="6">No borrowing requests yet.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

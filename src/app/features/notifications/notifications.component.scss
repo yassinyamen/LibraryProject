@@ -1,0 +1,55 @@
+.page {
+  padding: 1.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notif {
+  display: flex;
+  gap: 0.6rem;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+}
+
+.notif.unread {
+  background: #f5f8ff;
+  border-color: #cdd9ff;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2f6fed;
+  margin-top: 0.4rem;
+  flex-shrink: 0;
+}
+
+.dot.hidden {
+  visibility: hidden;
+}
+
+.body h3 {
+  margin: 0 0 0.2rem;
+  font-size: 0.95rem;
+}
+
+.body p {
+  margin: 0 0 0.3rem;
+  font-size: 0.85rem;
+  color: #444;
+}
+
+.meta {
+  font-size: 0.75rem;
+  color: #888;
+}

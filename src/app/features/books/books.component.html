@@ -1,0 +1,158 @@
+<div class="page">
+  <h1>Browse Books</h1>
+
+  <div class="filters">
+    <input
+      type="text"
+      placeholder="Search title, author, category…"
+      [(ngModel)]="search"
+      (keyup.enter)="load(1)"
+    />
+
+    <label class="checkbox">
+      <input type="checkbox" [(ngModel)]="availableOnly" (change)="load(1)" />
+      Available only
+    </label>
+
+    <select [(ngModel)]="sortBy" (change)="load(1)">
+      <option value="title">Title</option>
+      <option value="author">Author</option>
+      <option value="createdAt">Newest</option>
+    </select>
+
+    <select [(ngModel)]="sortOrder" (change)="load(1)">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+
+    <button (click)="load(1)">Search</button>
+  </div>
+
+  @if (loading()) {
+    <p>Loading…</p>
+  } @else {
+    <div class="grid">
+      @for (book of books(); track book.id) {
+        <div class="card" (click)="openDetails(book)">
+          <h3>{{ book.title }}</h3>
+          <p class="author">{{ book.author }}</p>
+          @if (book.category) {
+            <span class="tag">{{ book.category }}</span>
+          }
+          <p class="copies">
+            {{ book.availableCopies }} / {{ book.totalCopies }} available
+          </p>
+          <button
+            class="borrow-btn"
+            [disabled]="book.availableCopies <= 0"
+            (click)="$event.stopPropagation(); openBorrow(book)"
+          >
+            {{ book.availableCopies > 0 ? 'Request to borrow' : 'Unavailable' }}
+          </button>
+        </div>
+      } @empty {
+        <p>No books match your filters.</p>
+      }
+    </div>
+
+    <div class="pager">
+      <button (click)="prevPage()" [disabled]="page() <= 1">← Prev</button>
+      <span>Page {{ page() }} / {{ totalPages() }}</span>
+      <button (click)="nextPage()" [disabled]="page() >= totalPages()">Next →</button>
+    </div>
+  }
+</div>
+
+<!-- Book details modal: opened by clicking anywhere on a card -->
+@if (detailsBook(); as book) {
+  <div class="modal-backdrop" (click)="closeDetails()">
+    <div class="modal details-modal" (click)="$event.stopPropagation()">
+      <button class="close-x" (click)="closeDetails()" aria-label="Close">✕</button>
+
+      @if (detailsMetadata()?.coverUrl; as cover) {
+        <img class="cover" [src]="cover" [alt]="book.title + ' cover'" />
+      }
+
+      <h2>{{ book.title }}</h2>
+      <p class="author-line">{{ book.author }}</p>
+
+      <div class="detail-rows">
+        @if (book.category) {
+          <div class="row"><span class="label">Category</span><span>{{ book.category }}</span></div>
+        }
+        @if (book.isbn) {
+          <div class="row"><span class="label">ISBN</span><span>{{ book.isbn }}</span></div>
+        }
+        <div class="row">
+          <span class="label">Availability</span>
+          <span>{{ book.availableCopies }} / {{ book.totalCopies }} copies</span>
+        </div>
+
+        @if (detailsLoading()) {
+          <p class="loading-line">Looking up more details…</p>
+        } @else {
+          @if (detailsMetadata(); as meta) {
+            @if (meta.numberOfPages) {
+              <div class="row"><span class="label">Pages</span><span>{{ meta.numberOfPages }}</span></div>
+            }
+            @if (meta.publishDate) {
+              <div class="row"><span class="label">Published</span><span>{{ meta.publishDate }}</span></div>
+            }
+            @if (meta.publishers?.length) {
+              <div class="row"><span class="label">Publisher</span><span>{{ meta.publishers!.join(', ') }}</span></div>
+            }
+            @if (meta.subjects?.length) {
+              <div class="row"><span class="label">Subjects</span><span>{{ meta.subjects!.join(', ') }}</span></div>
+            }
+            @if (meta.description) {
+              <p class="description">{{ meta.description }}</p>
+            }
+          } @else if (detailsUnavailable()) {
+            <p class="unavailable-note">
+              No extra details found for this ISBN. Basic catalog info is shown above.
+            </p>
+          }
+        }
+      </div>
+
+      <div class="modal-actions">
+        <button (click)="closeDetails()">Close</button>
+        <button
+          class="primary-btn"
+          [disabled]="book.availableCopies <= 0"
+          (click)="closeDetails(); openBorrow(book)"
+        >
+          {{ book.availableCopies > 0 ? 'Request to borrow' : 'Unavailable' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Borrow request modal -->
+@if (borrowingBook(); as book) {
+  <div class="modal-backdrop" (click)="closeBorrow()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h2>Borrow "{{ book.title }}"</h2>
+
+      @if (borrowSuccess()) {
+        <p class="success">{{ borrowSuccess() }}</p>
+        <button class="primary-btn" (click)="closeBorrow()">Close</button>
+      } @else {
+        <label for="days">Borrowing period (1–30 days)</label>
+        <input id="days" type="number" min="1" max="30" [(ngModel)]="borrowDays" />
+
+        @if (borrowError()) {
+          <p class="error">{{ borrowError() }}</p>
+        }
+
+        <div class="modal-actions">
+          <button (click)="closeBorrow()">Cancel</button>
+          <button class="primary-btn" [disabled]="borrowSubmitting()" (click)="submitBorrow()">
+            {{ borrowSubmitting() ? 'Submitting…' : 'Submit request' }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+}

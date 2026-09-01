@@ -1,0 +1,99 @@
+.page {
+  padding: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.filters {
+  margin-bottom: 1rem;
+}
+
+.filters select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.request-card {
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.main h3 {
+  margin: 0 0 0.15rem;
+  font-size: 1rem;
+}
+
+.meta {
+  margin: 0 0 0.3rem;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.status {
+  font-size: 0.75rem;
+  background: #eef2ff;
+  color: #3550c9;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.actions input {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  min-width: 180px;
+}
+
+.approve-btn {
+  background: #1a8f4c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+}
+
+.deny-btn {
+  background: #d33;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+}
+
+.reviewed {
+  font-size: 0.8rem;
+  color: #555;
+  text-align: right;
+}
+
+.deny-reason {
+  color: #a12a34;
+}
+
+.error {
+  color: #d33;
+  margin-bottom: 0.75rem;
+}

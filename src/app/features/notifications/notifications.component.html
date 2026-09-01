@@ -1,0 +1,22 @@
+<div class="page">
+  <h1>Notifications</h1>
+
+  @if (loading()) {
+    <p>Loading…</p>
+  } @else {
+    <div class="list">
+      @for (n of notifications(); track n.id) {
+        <div class="notif" [class.unread]="!n.isRead" (click)="markRead(n)">
+          <div class="dot" [class.hidden]="n.isRead"></div>
+          <div class="body">
+            <h3>{{ n.title }}</h3>
+            <p>{{ n.message }}</p>
+            <span class="meta">{{ n.type }} · {{ n.createdAt | date: 'short' }}</span>
+          </div>
+        </div>
+      } @empty {
+        <p>No notifications yet.</p>
+      }
+    </div>
+  }
+</div>
